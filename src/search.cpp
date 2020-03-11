@@ -831,7 +831,11 @@ namespace {
         return qsearch<NT>(pos, ss, alpha, beta);
 
     improving =  (ss-2)->staticEval == VALUE_NONE ? (ss->staticEval > (ss-4)->staticEval
-              || (ss-4)->staticEval == VALUE_NONE) : ss->staticEval > (ss-2)->staticEval;
+              || (ss-4)->staticEval == VALUE_NONE || ((ss-7)->staticEval < (ss-5)->staticEval
+              && (ss-5)->staticEval < (ss-3)->staticEval && (ss-3)->staticEval < (ss-1)->staticEval
+              && ss->staticEval > VALUE_ZERO)) : ss->staticEval > (ss-2)->staticEval;
+
+
 
     // Step 8. Futility pruning: child node (~50 Elo)
     if (   !PvNode
