@@ -579,7 +579,7 @@ namespace {
     constexpr Direction Up   = pawn_push(Us);
 
     auto king_proximity = [&](Color c, Square s) {
-      return std::min(distance(pos.square<KING>(c), s), 5);
+      return distance(pos.square<KING>(c), s);
     };
 
     Bitboard b, bb, squaresToQueen, unsafeSquares;
