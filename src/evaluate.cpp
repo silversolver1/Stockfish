@@ -655,10 +655,9 @@ namespace {
 
   // Evaluation::space() computes the space evaluation for a given side. The
   // space evaluation is a simple bonus based on the number of safe squares
-  // available for minor pieces on the central four files on ranks 2--4. Safe
-  // squares one, two or three squares behind a friendly pawn are counted
-  // twice. Finally, the space bonus is multiplied by a weight. The aim is to
-  // improve play on game opening.
+  // available for minor pieces. Safe squares one, two or three squares
+  // behind a friendly pawn are counted twice. Finally, the space bonus is
+  // multiplied by a weight.
 
   template<Tracing T> template<Color Us>
   Score Evaluation<T>::space() const {
@@ -669,8 +668,8 @@ namespace {
     constexpr Color Them     = (Us == WHITE ? BLACK : WHITE);
     constexpr Direction Down = -pawn_push(Us);
     constexpr Bitboard SpaceMask =
-      Us == WHITE ? CenterFiles & (Rank2BB | Rank3BB | Rank4BB)
-                  : CenterFiles & (Rank7BB | Rank6BB | Rank5BB);
+      Us == WHITE ? CenterFiles & (Rank7BB | Rank6BB | Rank5BB)
+                  : CenterFiles & (Rank2BB | Rank3BB | Rank4BB);
 
     // Find the available squares for our pieces inside the area defined by SpaceMask
     Bitboard safe =   SpaceMask
