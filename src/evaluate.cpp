@@ -796,21 +796,54 @@ namespace {
 
     // Main evaluation begins here
 
-    initialize<WHITE>();
-    initialize<BLACK>();
+    Color firstSide, secondSide;
+    Score piecesHolder, piecesHolder2, mobHolder, mobHolder2, otherHolder, otherHolder2;
 
-    // Pieces should be evaluated first (populate attack tables)
-    score +=  pieces<WHITE, KNIGHT>() - pieces<BLACK, KNIGHT>()
-            + pieces<WHITE, BISHOP>() - pieces<BLACK, BISHOP>()
-            + pieces<WHITE, ROOK  >() - pieces<BLACK, ROOK  >()
-            + pieces<WHITE, QUEEN >() - pieces<BLACK, QUEEN >();
+    pos.side_to_move() == BLACK ? (firstSide = WHITE && secondSide == BLACK)
+                                 :(firstSide = BLACK && secondSide == WHITE);
 
-    score += mobility[WHITE] - mobility[BLACK];
+    //Everything related to first side
 
-    score +=  king<   WHITE>() - king<   BLACK>()
-            + threats<WHITE>() - threats<BLACK>()
-            + passed< WHITE>() - passed< BLACK>()
-            + space<  WHITE>() - space<  BLACK>();
+    initialize<firstSide>();
+
+    piecesHolder +=  pieces<firstSide, KNIGHT>()
+                   + pieces<firstSide, BISHOP>()
+                   + pieces<firstSide, ROOK  >()
+                   + pieces<firstSide, QUEEN >();
+
+    mobHolder = mobility[firstSide];
+
+    otherHolder += king<   firstSide>()
+                 + threats<firstSide>()
+                 + passed< firstSide>()
+                 + space<  firstSide>();
+
+    //Everything related to second side (side to move)
+
+    initialize<secondSide>();
+
+    piecesHolder2 +=  pieces<secondSide, KNIGHT>()
+                    + pieces<secondSide, BISHOP>()
+                    + pieces<secondSide, ROOK  >()
+                    + pieces<secondSide, QUEEN >();
+
+    mobHolder2 = mobility[secondSide];
+
+    otherHolder2 += king<   secondSide>()
+                  + threats<secondSide>()
+                  + passed< secondSide>()
+                  + space<  secondSide>();
+
+    //Calculations
+
+    firstSide == WHITE ? (score+= piecesHolder - piecesHolder2)
+                       : (score+= -piecesHolder + piecesHolder2);
+
+    firstSide == WHITE ? (score+= mobHolder - mobHolder2)
+                       : (score+= -mobHolder + mobHolder2);
+
+    firstSide == WHITE ? (score+= otherHolder - otherHolder2)
+                       : (score+= -otherHolder + otherHolder2);
 
     score += initiative(score);
 
