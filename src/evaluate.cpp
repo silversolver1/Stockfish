@@ -796,21 +796,37 @@ namespace {
 
     // Main evaluation begins here
 
-    initialize<WHITE>();
-    initialize<BLACK>();
+    Color sideArray [2] {};
+    Color colorHolder;
+    Score scoreHolder, piecesHolder, mobHolder, otherHolder;
 
-    // Pieces should be evaluated first (populate attack tables)
-    score +=  pieces<WHITE, KNIGHT>() - pieces<BLACK, KNIGHT>()
-            + pieces<WHITE, BISHOP>() - pieces<BLACK, BISHOP>()
-            + pieces<WHITE, ROOK  >() - pieces<BLACK, ROOK  >()
-            + pieces<WHITE, QUEEN >() - pieces<BLACK, QUEEN >();
+    pos.side_to_move() == BLACK ? (sideArray[0] = WHITE && sideArray[1] = BLACK)
+                                 :(sideArray[0] = BLACK && sideArray[1] = WHITE);
 
-    score += mobility[WHITE] - mobility[BLACK];
+    for(int i = 0; i < 2; i++ )
+    {
+      scoreHolder = piecesHolder = mobHolder = otherHolder = SCORE_ZERO;
 
-    score +=  king<   WHITE>() - king<   BLACK>()
-            + threats<WHITE>() - threats<BLACK>()
-            + passed< WHITE>() - passed< BLACK>()
-            + space<  WHITE>() - space<  BLACK>();
+      colorHolder = sideArray[i];
+
+      initialize<colorHolder>();
+
+      piecesHolder +=  pieces<colorHolder, KNIGHT>()
+                     + pieces<colorHolder, BISHOP>()
+                     + pieces<colorHolder, ROOK  >()
+                     + pieces<colorHolder, QUEEN >();
+
+      mobHolder = mobility[colorHolder];
+
+      otherHolder += king<   colorHolder>()
+                   + threats<colorHolder>()
+                   + passed< colorHolder>()
+                   + space<  colorHolder>();
+
+      scoreHolder = piecesHolder + mobHolder + otherHolder;
+
+      colorHolder == WHITE ? (score += scoreHolder) : (score -= scoreHolder);
+    }
 
     score += initiative(score);
 
