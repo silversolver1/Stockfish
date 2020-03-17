@@ -137,6 +137,7 @@ namespace {
   constexpr Score MinorBehindPawn     = S( 18,  3);
   constexpr Score Outpost             = S( 30, 21);
   constexpr Score PassedFile          = S( 11,  8);
+  constexpr Score PawnGuardPenalty    = S( 10,  0);
   constexpr Score PawnlessFlank       = S( 17, 95);
   constexpr Score RestrictedPiece     = S(  7,  7);
   constexpr Score RookOnQueenFile     = S(  7,  6);
@@ -358,6 +359,10 @@ namespace {
             Bitboard queenPinners;
             if (pos.slider_blockers(pos.pieces(Them, ROOK, BISHOP), s, queenPinners))
                 score -= WeakQueen;
+
+            // Penalty for queen guarding pawns
+            if (attacks_bb<QUEEN>(s, pos.pieces(Us, PAWN)) & (~attackedBy[Them][QUEEN] | ~attackedBy[Them][ROOK]))
+                score -= PawnGuardPenalty;
         }
     }
     if (T)
