@@ -129,6 +129,7 @@ namespace {
   // Assorted bonuses and penalties
   constexpr Score BishopPawns         = S(  3,  7);
   constexpr Score CorneredBishop      = S( 50, 50);
+  constexpr Score EnemyKingCloseness  = S( 10,  0);
   constexpr Score FlankAttacks        = S(  8,  0);
   constexpr Score Hanging             = S( 69, 36);
   constexpr Score KingProtector       = S(  7,  8);
@@ -265,6 +266,9 @@ namespace {
 
     for (Square s = *pl; s != SQ_NONE; s = *++pl)
     {
+        // Penalty if piece is close to enemy king
+        score -= EnemyKingCloseness * distance(pos.square<KING>(Them), s);
+
         // Find attacked squares, including x-ray attacks for bishops and rooks
         b = Pt == BISHOP ? attacks_bb<BISHOP>(s, pos.pieces() ^ pos.pieces(QUEEN))
           : Pt ==   ROOK ? attacks_bb<  ROOK>(s, pos.pieces() ^ pos.pieces(QUEEN) ^ pos.pieces(Us, ROOK))
