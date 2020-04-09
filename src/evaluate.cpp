@@ -144,6 +144,7 @@ namespace {
   constexpr Score ThreatByKing        = S( 24, 89);
   constexpr Score ThreatByPawnPush    = S( 48, 39);
   constexpr Score ThreatBySafePawn    = S(173, 94);
+  constexpr Score TrappedBishop       = S( 20, 10);
   constexpr Score TrappedRook         = S( 52, 10);
   constexpr Score WeakQueen           = S( 49, 15);
   constexpr Score WeakQueenProtection = S( 14,  0);
@@ -307,6 +308,10 @@ namespace {
 
             if (Pt == BISHOP)
             {
+                // Penalty if mob for bishop is low
+                if (mob <= 3)
+                    score -= TrappedBishop;
+
                 // Penalty according to number of pawns on the same color square as the
                 // bishop, bigger when the center files are blocked with pawns and smaller
                 // when the bishop is outside the pawn chain.
