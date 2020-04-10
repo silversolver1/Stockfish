@@ -144,6 +144,7 @@ namespace {
   constexpr Score ThreatByKing        = S( 24, 89);
   constexpr Score ThreatByPawnPush    = S( 48, 39);
   constexpr Score ThreatBySafePawn    = S(173, 94);
+  constexpr Score TrappedQueen        = S( 20,  0);
   constexpr Score TrappedRook         = S( 52, 10);
   constexpr Score WeakQueen           = S( 49, 15);
   constexpr Score WeakQueenProtection = S( 14,  0);
@@ -355,6 +356,10 @@ namespace {
 
         if (Pt == QUEEN)
         {
+            // Penalty if mob for queen is low
+            if (mob <= 3 && pos.count<QUEEN>(Them) != 0)
+                score -= TrappedQueen;
+
             // Penalty if any relative pin or discovered attack against the queen
             Bitboard queenPinners;
             if (pos.slider_blockers(pos.pieces(Them, ROOK, BISHOP), s, queenPinners))
