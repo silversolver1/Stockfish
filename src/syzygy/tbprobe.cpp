@@ -845,7 +845,7 @@ encode_remaining:
     idx *= d->groupIdx[0];
     Square* groupSq = squares + d->groupLen[0];
 
-    // Encode remainig pawns then pieces according to square, in ascending order
+    // Encode remaining pawns then pieces according to square, in ascending order
     bool remainingPawns = entry->hasPawns && entry->pawnCount[1];
 
     while (d->groupLen[++next])
@@ -905,7 +905,7 @@ void set_groups(T& e, PairsData* d, int order[], File f) {
     //
     // This ensures unique encoding for the whole position. The order of the
     // groups is a per-table parameter and could not follow the canonical leading
-    // pawns/pieces -> remainig pawns -> remaining pieces. In particular the
+    // pawns/pieces -> remaining pawns -> remaining pieces. In particular the
     // first group is at order[0] position and the remaining pawns, when present,
     // are at order[1] position.
     bool pp = e.hasPawns && e.pawnCount[1]; // Pawns on both sides
@@ -925,7 +925,7 @@ void set_groups(T& e, PairsData* d, int order[], File f) {
             d->groupIdx[1] = idx;
             idx *= Binomial[d->groupLen[1]][48 - d->groupLen[0]];
         }
-        else // Remainig pieces
+        else // Remaining pieces
         {
             d->groupIdx[next] = idx;
             idx *= Binomial[d->groupLen[next]][freeSquares];
