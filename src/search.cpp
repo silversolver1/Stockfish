@@ -1213,22 +1213,6 @@ moves_loop: // When in check, search starts from here
               else if (    type_of(move) == NORMAL
                        && !pos.see_ge(reverse_move(move)))
                   r -= 2 + ttPv;
-
-              ss->statScore =  thisThread->mainHistory[us][from_to(move)]
-                             + (*contHist[0])[movedPiece][to_sq(move)]
-                             + (*contHist[1])[movedPiece][to_sq(move)]
-                             + (*contHist[3])[movedPiece][to_sq(move)]
-                             - 4926;
-
-              // Decrease/increase reduction by comparing opponent's stat score (~10 Elo)
-              if (ss->statScore >= -102 && (ss-1)->statScore < -114)
-                  r--;
-
-              else if ((ss-1)->statScore >= -116 && ss->statScore < -154)
-                  r++;
-
-              // Decrease/increase reduction for moves with a good/bad history (~30 Elo)
-              r -= ss->statScore / 16434;
           }
           else
           {
@@ -1241,6 +1225,22 @@ moves_loop: // When in check, search starts from here
                 && ss->staticEval + PieceValue[EG][pos.captured_piece()] + 200 * depth <= alpha)
                 r++;
           }
+
+          ss->statScore =  thisThread->mainHistory[us][from_to(move)]
+                         + (*contHist[0])[movedPiece][to_sq(move)]
+                         + (*contHist[1])[movedPiece][to_sq(move)]
+                         + (*contHist[3])[movedPiece][to_sq(move)]
+                         - 4926;
+
+          // Decrease/increase reduction by comparing opponent's stat score (~10 Elo)
+          if (ss->statScore >= -102 && (ss-1)->statScore < -114)
+              r--;
+
+          else if ((ss-1)->statScore >= -116 && ss->statScore < -154)
+              r++;
+
+          // Decrease/increase reduction for moves with a good/bad history (~30 Elo)
+          r -= ss->statScore / 16434;          
 
           Depth d = Utility::clamp(newDepth - r, 1, newDepth);
 
