@@ -1232,6 +1232,10 @@ moves_loop: // When in check, search starts from here
           }
           else
           {
+            // Increase reduction for cut nodes
+            if (cutNode)
+                r += 1 + !givesCheck;
+
             // Increase reduction for captures/promotions if late move and at low depth
             if (depth < 8 && moveCount > 2)
                 r++;
