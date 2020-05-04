@@ -287,7 +287,7 @@ namespace {
             kingAttacksCount[Us] += popcount(b & attackedBy[Them][KING]);
         }
 
-        int mob = popcount(b & mobilityArea[Us]);
+        int mob = popcount(b & mobilityArea[Us] & ~pos.pieces(Us));
 
         mobility[Us] += MobilityBonus[Pt - 2][mob];
 
