@@ -1197,6 +1197,9 @@ moves_loop: // When in check, search starts from here
           if (singularLMR)
               r -= 1 + formerPv;
 
+          if (bestValue < alpha - Value(400) && depth > 6)
+              r += 2;
+
           if (!captureOrPromotion)
           {
               // Increase reduction if ttMove is a capture (~5 Elo)
