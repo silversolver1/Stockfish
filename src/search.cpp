@@ -705,6 +705,9 @@ namespace {
     thisThread->ttHitAverage =   (TtHitAverageWindow - 1) * thisThread->ttHitAverage / TtHitAverageWindow
                                 + TtHitAverageResolution * ttHit;
 
+    CapturePieceToHistory& captureHistory = thisThread->captureHistory;
+    movedPiece = pos.moved_piece(ttMove);
+
     // At non-PV nodes we check for an early TT cutoff
     if (  !PvNode
         && ttHit
@@ -713,7 +716,7 @@ namespace {
         && (ttValue >= beta ? (tte->bound() & BOUND_LOWER)
                             : (tte->bound() & BOUND_UPPER)))
     {
-        // If ttMove is quiet, update move sorting heuristics on TT hit
+        // Update move sorting heuristics on TT hit
         if (ttMove)
         {
             if (ttValue >= beta)
@@ -731,6 +734,13 @@ namespace {
                 int penalty = -stat_bonus(depth);
                 thisThread->mainHistory[us][from_to(ttMove)] << penalty;
                 update_continuation_histories(ss, pos.moved_piece(ttMove), to_sq(ttMove), penalty);
+            }
+            // Penalty for capture or promotion ttMove that fails low
+            else if (pos.capture_or_promotion(ttMove))
+            {
+                int penalty = -stat_bonus(depth);
+                thisThread->mainHistory[us][from_to(ttMove)] << penalty;
+                captureHistory[movedPiece][to_sq(ttMove)][type_of(pos.piece_on(to_sq(ttMove)))] << penalty;
             }
         }
 
@@ -789,8 +799,6 @@ namespace {
             }
         }
     }
-
-    CapturePieceToHistory& captureHistory = thisThread->captureHistory;
 
     // Step 6. Static evaluation of the position
     if (ss->inCheck)
