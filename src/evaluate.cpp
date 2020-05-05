@@ -153,6 +153,9 @@ namespace {
 
 #undef S
 
+  int A = 0;
+  TUNE(SetRange(-20, 20), A);
+
   // Evaluation class computes and stores attacks tables and other working data
   template<Tracing T>
   class Evaluation {
@@ -734,6 +737,7 @@ namespace {
                     + 21 * pawnsOnBothFlanks
                     + 24 * infiltration
                     + 51 * !pos.non_pawn_material()
+                    +  A * pe->blocked_count()
                     - 43 * almostUnwinnable
                     -110 ;
 
