@@ -188,6 +188,13 @@ namespace {
 
 } // namespace
 
+int A = 0;
+int B = 0;
+int C = 0;
+int D = 0;
+
+TUNE(SetRange(-5, 5), A, B);
+TUNE(SetRange(0, 20), C, D);
 
 /// Search::init() is called at startup to initialize various lookup tables
 
@@ -728,8 +735,8 @@ namespace {
                 if ((ss-1)->moveCount <= 2 && !priorCapture)
                     update_continuation_histories(ss-1, pos.piece_on(prevSq), prevSq, -stat_bonus(depth + 1));
 
-                if (pos.capture_or_promotion(ttMove))
-                    captureHistory[movedPiece][to_sq(ttMove)][type_of(pos.piece_on(to_sq(ttMove)))] << stat_bonus(depth);
+                if (pos.capture_or_promotion(ttMove) && depth > C)
+                    captureHistory[movedPiece][to_sq(ttMove)][type_of(pos.piece_on(to_sq(ttMove)))] << stat_bonus(depth) * A;
 
             }
             // Penalty for a quiet ttMove that fails low
@@ -740,9 +747,9 @@ namespace {
                 update_continuation_histories(ss, pos.moved_piece(ttMove), to_sq(ttMove), penalty);
             }
             // Penalty for capture or promotion ttMove that fails low
-            else if (pos.capture_or_promotion(ttMove))
+            else if (pos.capture_or_promotion(ttMove) && depth > D)
             {
-                int penalty = -stat_bonus(depth);
+                int penalty = -stat_bonus(depth) * B;
                 thisThread->mainHistory[us][from_to(ttMove)] << penalty;
                 captureHistory[movedPiece][to_sq(ttMove)][type_of(pos.piece_on(to_sq(ttMove)))] << penalty;
             }
