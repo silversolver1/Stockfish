@@ -711,6 +711,12 @@ namespace {
     return score;
   }
 
+  int A = 13;
+  int B = -80;
+
+  TUNE(SetRange(-25, 25), A);
+  TUNE(SetRange(-600, 600), B);
+
 
   // Evaluation::initiative() computes the initiative correction value
   // for the position. It is a second order bonus/malus based on the
@@ -738,8 +744,9 @@ namespace {
                     + 21 * pawnsOnBothFlanks
                     + 24 * infiltration
                     + 51 * !pos.non_pawn_material()
+                    +  A * pe->blocked_count()
                     - 43 * almostUnwinnable
-                    -110 ;
+                    -110 + B;
 
     Value mg = mg_value(score);
     Value eg = eg_value(score);
