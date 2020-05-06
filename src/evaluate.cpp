@@ -671,6 +671,11 @@ namespace {
     return score;
   }
 
+  int A = 0;
+  int B = 0;
+
+  TUNE(SetRange(-6000, 6000), A);
+  TUNE(SetRange(-500, 500), B);
 
   // Evaluation::space() computes the space evaluation for a given side. The
   // space evaluation is a simple bonus based on the number of safe squares
@@ -682,7 +687,7 @@ namespace {
   template<Tracing T> template<Color Us>
   Score Evaluation<T>::space() const {
 
-    if (pos.non_pawn_material() < SpaceThreshold)
+    if (pos.non_pawn_material() < SpaceThreshold + A + pe->blocked_count() * B)
         return SCORE_ZERO;
 
     constexpr Color Them     = ~Us;
