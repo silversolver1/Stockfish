@@ -148,6 +148,7 @@ namespace {
   constexpr Score ThreatByKing        = S( 24, 89);
   constexpr Score ThreatByPawnPush    = S( 48, 39);
   constexpr Score ThreatBySafePawn    = S(173, 94);
+  constexpr Score ECapSetupPenalty    = S( 10,  0);
   constexpr Score TrappedRook         = S( 55, 13);
   constexpr Score WeakQueen           = S( 51, 14);
   constexpr Score WeakQueenProtection = S( 15,  0);
@@ -366,6 +367,12 @@ namespace {
             Bitboard queenPinners;
             if (pos.slider_blockers(pos.pieces(Them, ROOK, BISHOP), s, queenPinners))
                 score -= WeakQueen;
+        }
+
+        if (Pt == QUEEN || Pt == ROOK || Pt == KNIGHT || Pt == BISHOP)
+        {
+            if (!more_than_one(attackedBy[Them][ALL_PIECES] & pos.pieces(Us) & s))
+                score -= ECapSetupPenalty;
         }
     }
     if (T)
