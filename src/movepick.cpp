@@ -48,6 +48,8 @@ namespace {
 
 } // namespace
 
+int A = -55;
+TUNE(SetRange(-200, 200), A);
 
 /// Constructors of the MovePicker class. As arguments we pass information
 /// to help it to return the (presumably) good moves first, to decide which
@@ -169,7 +171,7 @@ top:
 
   case GOOD_CAPTURE:
       if (select<Best>([&](){
-                       return pos.see_ge(*cur, Value(-55 * cur->value / 1024)) ?
+                       return pos.see_ge(*cur, Value(A * cur->value / 1024)) ?
                               // Move losing capture to endBadCaptures to be tried later
                               true : (*endBadCaptures++ = *cur, false); }))
           return *(cur - 1);
