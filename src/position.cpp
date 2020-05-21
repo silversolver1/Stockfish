@@ -1012,6 +1012,10 @@ Key Position::key_after(Move m) const {
 /// SEE value of move is greater or equal to the given threshold. We'll use an
 /// algorithm similar to alpha-beta pruning with a null window.
 
+int A = 0;
+
+TUNE(SetRange(-1000, 1000), A);
+
 bool Position::see_ge(Move m, Value threshold) const {
 
   assert(is_ok(m));
@@ -1023,7 +1027,7 @@ bool Position::see_ge(Move m, Value threshold) const {
   Square from = from_sq(m), to = to_sq(m);
 
   int swap = PieceValue[MG][piece_on(to)] - threshold;
-  if (swap < 0)
+  if (swap < A)
       return false;
 
   swap = PieceValue[MG][piece_on(from)] - swap;
