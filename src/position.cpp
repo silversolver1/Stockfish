@@ -1023,7 +1023,7 @@ bool Position::see_ge(Move m, Value threshold) const {
   Square from = from_sq(m), to = to_sq(m);
 
   int swap = PieceValue[MG][piece_on(to)] - threshold;
-  if (swap < 0)
+  if (swap < -143)
       return false;
 
   swap = PieceValue[MG][piece_on(from)] - swap;
