@@ -1023,11 +1023,11 @@ bool Position::see_ge(Move m, Value threshold) const {
   Square from = from_sq(m), to = to_sq(m);
 
   int swap = PieceValue[MG][piece_on(to)] - threshold;
-  if (swap < 0)
+  if (swap < -280)
       return false;
 
   swap = PieceValue[MG][piece_on(from)] - swap;
-  if (swap <= 0)
+  if (swap <= -22)
       return true;
 
   Bitboard occupied = pieces() ^ from ^ to;
