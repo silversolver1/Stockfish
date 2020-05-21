@@ -713,6 +713,12 @@ namespace {
   // for the position. It is a second order bonus/malus based on the
   // known attacking/defending status of the players.
 
+  int A = 25;
+  int B = 100;
+
+  TUNE(SetRange(-200, 200), A);
+  TUNE(SetRange(-600, 600), B);
+
   template<Tracing T>
   Score Evaluation<T>::initiative(Score score) const {
 
@@ -735,9 +741,10 @@ namespace {
                     + 21 * pawnsOnBothFlanks
                     + 24 * infiltration
                     + 51 * !pos.non_pawn_material()
+                    +  A * pe->blocked_count()
                     - 43 * almostUnwinnable
                     -  2 * pos.rule50_count()
-                    -110 ;
+                    -110 + B;
 
     Value mg = mg_value(score);
     Value eg = eg_value(score);
