@@ -146,8 +146,8 @@ namespace {
   constexpr Score RookOnQueenFile     = S(  5,  9);
   constexpr Score SliderOnQueen       = S( 59, 18);
   constexpr Score ThreatByKing        = S( 24, 89);
-  constexpr Score ThreatByPawnPush    = S( 48, 39);
-  constexpr Score ThreatBySafePawn    = S(173, 94);
+  Score ThreatByPawnPush    = S( 48, 39);
+  Score ThreatBySafePawn    = S(173, 94);
   constexpr Score TrappedRook         = S( 55, 13);
   constexpr Score WeakQueen           = S( 51, 14);
   constexpr Score WeakQueenProtection = S( 15,  0);
@@ -481,6 +481,8 @@ namespace {
     return score;
   }
 
+  TUNE(SetRange(0, 100), ThreatByPawnPush);
+  TUNE(SetRange(50, 225), ThreatBySafePawn);
 
   // Evaluation::threats() assigns bonuses according to the types of the
   // attacking and the attacked pieces.
