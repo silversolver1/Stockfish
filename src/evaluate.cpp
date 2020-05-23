@@ -149,8 +149,8 @@ namespace {
   constexpr Score ThreatByPawnPush    = S( 48, 39);
   constexpr Score ThreatBySafePawn    = S(173, 94);
   constexpr Score TrappedRook         = S( 55, 13);
-  constexpr Score WeakQueen           = S( 51, 14);
-  constexpr Score WeakQueenProtection = S( 15,  0);
+  Score WeakQueen           = S( 51, 14);
+  Score WeakQueenProtection = S( 15,  0);
 
 #undef S
 
@@ -251,6 +251,8 @@ namespace {
     kingRing[Us] &= ~dblAttackByPawn;
   }
 
+  TUNE(SetRange(0, 100), WeakQueen);
+  TUNE(SetRange(0, 100), WeakQueenProtection);
 
   // Evaluation::pieces() scores pieces of a given color and type
   template<Tracing T> template<Color Us, PieceType Pt>
