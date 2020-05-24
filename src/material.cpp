@@ -26,17 +26,20 @@
 
 using namespace std;
 
+int A = 104;
+TUNE(SetRange(-200, 200), A);
+
 namespace {
 
   // Polynomial material imbalance parameters
 
-  constexpr int QuadraticOurs[][PIECE_TYPE_NB] = {
+  int QuadraticOurs[][PIECE_TYPE_NB] = {
     //            OUR PIECES
     // pair pawn knight bishop rook queen
     {1438                               }, // Bishop pair
     {  40,   38                         }, // Pawn
     {  32,  255, -62                    }, // Knight      OUR PIECES
-    {   0,  104,   4,    0              }, // Bishop
+    {   0,    A,   4,    0              }, // Bishop
     { -26,   -2,  47,   105,  -208      }, // Rook
     {-189,   24, 117,   133,  -134, -6  }  // Queen
   };
