@@ -26,6 +26,9 @@
 
 using namespace std;
 
+int A = 0;
+TUNE(SetRange(-300, 300), A);
+
 namespace {
 
   // Polynomial material imbalance parameters
@@ -41,10 +44,10 @@ namespace {
     {-189,   24, 117,   133,  -134, -6  }  // Queen
   };
 
-  constexpr int QuadraticTheirs[][PIECE_TYPE_NB] = {
+  int QuadraticTheirs[][PIECE_TYPE_NB] = {
     //           THEIR PIECES
     // pair pawn knight bishop rook queen
-    {   0                               }, // Bishop pair
+    {   A                               }, // Bishop pair
     {  36,    0                         }, // Pawn
     {   9,   63,   0                    }, // Knight      OUR PIECES
     {  59,   65,  42,     0             }, // Bishop
