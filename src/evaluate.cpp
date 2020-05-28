@@ -760,6 +760,12 @@ namespace {
 
   // Evaluation::scale_factor() computes the scale factor for the winning side
 
+  int A = 36;
+  int B = 7;
+
+  TUNE(SetRange(0, 50), A);
+  TUNE(SetRange(0, 25), B);
+
   template<Tracing T>
   ScaleFactor Evaluation<T>::scale_factor(Value eg) const {
 
@@ -778,7 +784,7 @@ namespace {
                 sf = 22 + 3 * pos.count<ALL_PIECES>(strongSide);
         }
         else
-            sf = std::min(sf, 36 + 7 * pos.count<PAWN>(strongSide));
+            sf = std::min(sf, A + B * pe->blocked_count());
     }
 
     return ScaleFactor(sf);
