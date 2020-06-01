@@ -1271,7 +1271,7 @@ moves_loop: // When in check, search starts from here
               int bonus = value > alpha ?  stat_bonus(newDepth)
                                         : -stat_bonus(newDepth);
 
-              if (move == ss->killers[0])
+              if (move == ss->killers[0] && (ss-1)->currentMove != (ss-1)->killers[0])
                   bonus += bonus / 4;
 
               update_continuation_histories(ss, movedPiece, to_sq(move), bonus);
