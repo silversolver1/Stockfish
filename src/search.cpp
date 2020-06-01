@@ -1123,6 +1123,7 @@ moves_loop: // When in check, search starts from here
 
       // Passed pawn extension
       else if (   move == ss->killers[0]
+               && (ss-1)->currentMove != (ss-1)->killers[0]
                && pos.advanced_pawn_push(move)
                && pos.pawn_passed(us, to_sq(move)))
           extension = 1;
