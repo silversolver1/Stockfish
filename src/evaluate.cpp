@@ -573,8 +573,10 @@ namespace {
 
         score += KnightOnQueen * popcount(b & safe);
 
-        b =  (attackedBy[Us][BISHOP] & attacks_bb<BISHOP>(s, pos.pieces()))
-           | (attackedBy[Us][ROOK  ] & attacks_bb<ROOK  >(s, pos.pieces()));
+        Bitboard blockedPawns = pos.pieces(Us, PAWN) & shift<-Up>(pos.pieces(Them, PAWN));
+
+        b =  (attackedBy[Us][BISHOP] & attacks_bb<BISHOP>(s, pos.pieces() ^ blockedPawns))
+           | (attackedBy[Us][ROOK  ] & attacks_bb<ROOK  >(s, pos.pieces() ^ blockedPawns));
 
         score += SliderOnQueen * popcount(b & safe & attackedBy2[Us]);
     }
