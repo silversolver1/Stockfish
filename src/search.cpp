@@ -1063,8 +1063,8 @@ moves_loop: // When in check, search starts from here
                   && ss->staticEval + 270 + 384 * lmrDepth + PieceValue[MG][type_of(pos.piece_on(to_sq(move)))] <= alpha)
                   continue;
 
-              // See based pruning
-              if (!pos.see_ge(move, Value(-194) * depth)) // (~25 Elo)
+              // See based pruning when move doesn't give check
+              if (!pos.see_ge(move, Value(-194) * depth) && !givesCheck) // (~25 Elo)
                   continue;
           }
       }
