@@ -1102,6 +1102,12 @@ moves_loop: // When in check, search starts from here
                && pos.non_pawn_material() <= 2 * RookValueMg)
           extension = 1;
 
+      else if (   ss->inCheck
+               && PvNode
+               && type_of(movedPiece) == KING
+               && abs(ttValue) < 400)
+               extension = 1;
+
       // Castling extension
       if (type_of(move) == CASTLING)
           extension = 1;
