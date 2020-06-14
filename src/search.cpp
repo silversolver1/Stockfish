@@ -25,6 +25,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "bitboard.h"
 #include "evaluate.h"
 #include "misc.h"
 #include "movegen.h"
@@ -1173,6 +1174,10 @@ moves_loop: // When in check, search starts from here
 
           if (!captureOrPromotion)
           {
+              // Increase reduction when our king is moving onto a pawnless flank
+              if (type_of(movedPiece) == KING && !(pos.pieces(PAWN) & KingFlank[file_of(to_sq(move))]))
+                  r++;
+
               // Increase reduction if ttMove is a capture (~5 Elo)
               if (ttCapture)
                   r++;
