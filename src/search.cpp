@@ -1135,6 +1135,9 @@ moves_loop: // When in check, search starts from here
       // Step 15. Make the move
       pos.do_move(move, st, givesCheck);
 
+      Bitboard OutpostRanks = (us == WHITE ? Rank4BB | Rank5BB | Rank6BB
+                                           : Rank5BB | Rank4BB | Rank3BB);
+
       // Step 16. Reduced depth search (LMR, ~200 Elo). If the move fails high it will be
       // re-searched at full depth.
       if (    depth >= 3
@@ -1170,6 +1173,12 @@ moves_loop: // When in check, search starts from here
           // Decrease reduction if ttMove has been singularly extended (~3 Elo)
           if (singularQuietLMR)
               r -= 1 + formerPv;
+
+          //
+          if (((type_of(movedPiece) == KNIGHT) || (type_of(movedPiece) == BISHOP))
+              && (square_bb(to_sq(move)) & OutpostRanks)
+              && pos.non_pawn_material() < 12222)
+                r--;
 
           if (!captureOrPromotion)
           {
