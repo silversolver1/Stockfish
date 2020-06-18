@@ -131,7 +131,7 @@ namespace {
 
         // Passed pawns will be properly scored later in evaluation when we have
         // full attack info.
-        if (passed)
+        if (passed && r > RANK_3)
             e->passedPawns[Us] |= s;
 
         // Score this pawn
