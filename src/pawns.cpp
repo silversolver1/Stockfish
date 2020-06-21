@@ -155,7 +155,7 @@ namespace {
         }
 
         else if (backward)
-            score -=   Backward
+            score -=   Backward * (5 / 4 * pos.is_on_semiopen_file(Us, s))
                      + WeakUnopposed * !opposed;
 
         if (!support)
