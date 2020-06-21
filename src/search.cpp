@@ -871,6 +871,7 @@ namespace {
     // much above beta, we can (almost) safely prune the previous move.
     if (   !PvNode
         &&  depth > 4
+        &&  ss->staticEval >= beta - 150 - 33 * depth
         &&  abs(beta) < VALUE_TB_WIN_IN_MAX_PLY)
     {
         Value raisedBeta = beta + 176 - 49 * improving;
