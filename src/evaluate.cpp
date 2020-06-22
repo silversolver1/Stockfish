@@ -127,6 +127,7 @@ namespace {
   };
 
   // Assorted bonuses and penalties
+  constexpr Score BishopInfiltration  = S( 10, 10);
   constexpr Score BishopPawns         = S(  3,  7);
   constexpr Score BishopOnKingRing    = S( 24,  0);
   constexpr Score BishopXRayPawns     = S(  4,  5);
@@ -319,6 +320,10 @@ namespace {
 
             if (Pt == BISHOP)
             {
+                // Penalty for bishop on weak square in enemy camp
+                if (relative_rank(Us, s) > RANK_4 && (pe->pawn_attacks_span(Them) & s))
+                  score -= BishopInfiltration;
+
                 // Penalty according to the number of our pawns on the same color square as the
                 // bishop, bigger when the center files are blocked with pawns and smaller
                 // when the bishop is outside the pawn chain.
@@ -377,7 +382,7 @@ namespace {
 
             // Bonus for queen on weak square in enemy camp
             if (relative_rank(Us, s) > RANK_4 && (~pe->pawn_attacks_span(Them) & s))
-                score += QueenInfiltration;    
+                score += QueenInfiltration;
         }
     }
     if (T)
