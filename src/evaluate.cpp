@@ -377,7 +377,7 @@ namespace {
 
             // Bonus for queen on weak square in enemy camp
             if (relative_rank(Us, s) > RANK_4 && (~pe->pawn_attacks_span(Them) & s))
-                score += QueenInfiltration;    
+                score += QueenInfiltration;
         }
     }
     if (T)
@@ -865,8 +865,11 @@ namespace {
     // Side to move point of view
     v = (pos.side_to_move() == WHITE ? v : -v) + Tempo;
 
-    // Damp down the evaluation linearly when shuffling
-    v = v * (100 - pos.rule50_count()) / 100;
+    // Damp down the evaluation when shuffling
+    if (pos.rule50_count() < 70)
+        v = v * (100 - pos.rule50_count()) / 100;
+    else
+        v = VALUE_ZERO;
 
     return v;
   }
