@@ -1214,6 +1214,10 @@ moves_loop: // When in check, search starts from here
             if (   !givesCheck
                 && ss->staticEval + PieceValue[EG][pos.captured_piece()] + 211 * depth <= alpha)
                 r++;
+
+            // Increase reduction for captures/promotions if an enemy piece attacks the square that we are moving onto
+            if (bool(pos.attackers_to(to_sq(move)) & pos.pieces(~us)))
+                r--;
           }
 
           Depth d = Utility::clamp(newDepth - r, 1, newDepth);
