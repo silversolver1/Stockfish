@@ -1503,6 +1503,10 @@ moves_loop: // When in check, search starts from here
 
       moveCount++;
 
+      // Do not search moves with negative SEE values
+      if (  !ss->inCheck && !pos.see_ge(move))
+          continue;
+
       // Futility pruning
       if (   !ss->inCheck
           && !givesCheck
@@ -1525,10 +1529,6 @@ moves_loop: // When in check, search starts from here
               continue;
           }
       }
-
-      // Do not search moves with negative SEE values
-      if (  !ss->inCheck && !pos.see_ge(move))
-          continue;
 
       // Speculative prefetch as early as possible
       prefetch(TT.first_entry(pos.key_after(move)));
