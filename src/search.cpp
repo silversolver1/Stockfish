@@ -1125,7 +1125,8 @@ moves_loop: // When in check, search starts from here
           extension = 1;
 
       // Castling extension
-      if (type_of(move) == CASTLING)
+      if (type_of(move) == CASTLING
+          && (popcount(rank_bb(to_sq(move)) & pos.pieces(us)) <= 6 || pos.is_chess960()))
           extension = 1;
 
       // Late irreversible move extension
