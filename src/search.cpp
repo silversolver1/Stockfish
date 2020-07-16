@@ -1193,6 +1193,17 @@ moves_loop: // When in check, search starts from here
           if (singularQuietLMR)
               r -= 1 + formerPv;
 
+          // Increase reduction if castling onto vertical half of board with less pawns (KingSide/QueenSide)
+          if (type_of(move) == CASTLING)
+          {
+            int safeCastle = popcount(pos.pieces(us, PAWN) & KingSide) - popcount(pos.pieces(us, PAWN) & QueenSide);
+
+            if (safeCastle > 0 && (square_bb(to_sq(move)) & QueenSide))
+                r++;
+            else if (safeCastle < 0 && (square_bb(to_sq(move)) & KingSide))
+                r++;
+          }
+
           if (!captureOrPromotion)
           {
               // Increase reduction if ttMove is a capture (~5 Elo)
