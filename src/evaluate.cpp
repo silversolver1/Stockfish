@@ -54,7 +54,9 @@
 
 
 using namespace std;
-using namespace Eval::NNUE;
+using namespace Stockfish::Eval::NNUE;
+
+namespace Stockfish {
 
 namespace Eval {
 
@@ -423,7 +425,6 @@ namespace {
             score += BishopOnKingRing;
 
         int mob = popcount(b & mobilityArea[Us]);
-
         mobility[Us] += MobilityBonus[Pt - 2][mob];
 
         if (Pt == BISHOP || Pt == KNIGHT)
@@ -1147,3 +1148,5 @@ std::string Eval::trace(const Position& pos) {
 
   return ss.str();
 }
+
+} // namespace Stockfish
